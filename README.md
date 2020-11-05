@@ -22,4 +22,8 @@ Python et créer un algorithme en C++ plus performant.
 $ git clone https://github.com/julienMeinas/PFE-Identification-rapide-d-ADN-duplique-dans-des-leucemies <br/>
 $ cd PFE-Identification-rapide-d-ADN-duplique-dans-des-leucemies/ <br/>
 $ make gatb <br/>
-$ make all <br/>
+
+
+- Lancement du code
+$ make main <br/>
+$ ./Project/main -in ["FLT3 file".fa]  -kmer-size [Kmer_size] -sequences ["Sequences_file".fa]
