@@ -24,6 +24,6 @@ $ cd PFE-Identification-rapide-d-ADN-duplique-dans-des-leucemies/ <br/>
 $ make gatb <br/>
 
 
-- Lancement du code
+- Lancement du code : <br/>
 $ make main <br/>
 $ ./Project/main -in ["FLT3 file".fa]  -kmer-size [Kmer_size] -sequences ["Sequences_file".fa]
