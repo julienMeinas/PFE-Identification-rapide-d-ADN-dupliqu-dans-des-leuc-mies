@@ -8,7 +8,8 @@ class ClassFilter
     public:
     ClassFilter(int kmerSize, std::string bankTranscript, std::string bankSequences);
     void CreateBloomFilter();
-    void Filter();
+    void Filter(float p);
+    void CreateHashMap();
 
 
     private:
@@ -16,5 +17,7 @@ class ClassFilter
     std::string m_bankSequences;
     int m_kmerSize;
     bloom_type *m_bloom;
+    std::map<std::string, int> m_hashMapTranscript;
+    ofstream TransformationFile;
 
 };
