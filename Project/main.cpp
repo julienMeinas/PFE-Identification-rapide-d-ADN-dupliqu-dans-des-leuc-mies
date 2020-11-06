@@ -22,7 +22,8 @@ int main(int argc, char* argv[]) {
       IProperties* options = parser.parse (argc, argv);
 
       ClassFilter filtre(options->getInt(STR_KMER_SIZE), options->getStr(STR_URI_INPUT), options->getStr(STR_URI_SEQUENCES));
-      filtre.Filter();
+      filtre.Filter(0.15);
+
 
     }
     catch (OptionFailure& e)
