@@ -9,7 +9,10 @@ using namespace std;
 
 static const size_t span = KMER_SPAN(0);
 
-
+/**
+Classe permettant de réaliser l'étape 1 c'est à dire de filtrer
+l'ensemble de séquences afin de ne garder que les gènes FLT3.
+*/
 ClassFilter::ClassFilter(int kmerSize, string bankTranscript, string bankSequences)
 {
   m_kmerSize = kmerSize;
@@ -18,6 +21,14 @@ ClassFilter::ClassFilter(int kmerSize, string bankTranscript, string bankSequenc
   TransformationFile.open ("Project/Results/Transformation.txt");
 }
 
+/**
+Permet de créer le filtre de bloom dans la variable m_bloom
+puis d'inserer les kmers du gène FLT3 dans le filtre de bloom
+
+Le filtre de bloom est très effacace en temps pour vérifier la
+présence d'un kmer dans le gène FLT3 car on utilise des tables
+de bits pour stocker les kmers.
+*/
 void ClassFilter::CreateBloomFilter()
 {
   std::cout << "create bloom filter : " << '\n';
@@ -52,6 +63,24 @@ void ClassFilter::CreateBloomFilter()
 }
 
 
+/**
+Permer de créer une table de hashage contenant les kmers
+dans la variable m_hashMapTranscript
+clé (String) : kmer
+valeur (int) : position dans le gène FLT3séquence et des
+
+
+exemple:
+Si on a la séquence suivante ACGTCCC et des kmer de taille 3
+alors la table de hashage sera la suivante:
+{
+"ACG" : 1,
+"CGT" : 2,
+"GTC" : 3,
+"TCC" : 4,
+"CCC" : 5
+}
+*/
 void ClassFilter::CreateHashMap()
 {
   std::cout << "create hashMap transcript : " << '\n';
@@ -86,7 +115,22 @@ void ClassFilter::CreateHashMap()
 }
 
 
+/**
+Permet de filtrer un fichier de sequences en ne gardant
+seulement les séquences FLT3.
+une séquences correspond au gène FLT3 si la ressemblance
+dépasse p.
 
+On va vérifier si chaque séquence correspond au gène FLT3
+grâce au Filtre de Bloom, si la ressemblance est validé
+on va écrire dans un fichier la séquence sous la forme suivante:
+Pour chaque kmer de cette séquence on va écrire N si le kmer
+n'est pas présent dans le gène FLT3 sinon la position de ce
+kmer dans le gène.
+
+exemple de fichier en sorti:
+N N N 1 2 3 4 5 N N N 6 8 N N N ...
+*/
 void ClassFilter::Filter(float p)
 {
   CreateBloomFilter();
@@ -143,7 +187,3 @@ void ClassFilter::Filter(float p)
   TransformationFile.close();
   cout << "FOUND " << nbSequences << " sequences" << endl;
 }
-
-/**
-TODO : Créer une banque de données avec seulement les gènes FLT3 (resultat final de la classe)
-*/
