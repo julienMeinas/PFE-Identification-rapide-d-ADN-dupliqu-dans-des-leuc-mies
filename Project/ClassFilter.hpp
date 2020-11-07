@@ -17,7 +17,7 @@ class ClassFilter
     std::string m_bankSequences;
     int m_kmerSize;
     bloom_type *m_bloom;
-    std::map<std::string, int> m_hashMapTranscript;
+    std::map<std::string, std::string> m_hashMapTranscript;
     ofstream TransformationFile;
 
 };

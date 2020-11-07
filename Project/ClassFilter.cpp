@@ -108,8 +108,15 @@ void ClassFilter::CreateHashMap()
       // We iterate the kmers.
       for (itKmer.first(); !itKmer.isDone(); itKmer.next())
       {
-        m_hashMapTranscript[model.toString(itKmer->value())] = position;
-        position++;
+        if(m_hashMapTranscript[model.toString(itKmer->value())] != "") {
+          m_hashMapTranscript[model.toString(itKmer->value())] = m_hashMapTranscript[model.toString(itKmer->value())].append(";");
+          m_hashMapTranscript[model.toString(itKmer->value())] = m_hashMapTranscript[model.toString(itKmer->value())].append(std::to_string(position));
+
+        }
+        else{
+          m_hashMapTranscript[model.toString(itKmer->value())] = std::to_string(position);
+          position++;
+        }
       }
   }
 }
@@ -140,6 +147,7 @@ void ClassFilter::Filter(float p)
   LOCAL (sequences);
 
   u_int64_t nbSequences = 0;
+  u_int64_t nbSequencesFLT3 = 0;
 
   // We declare a kmer model with a given span size.
   Kmer<span>::ModelDirect model (m_kmerSize);
@@ -167,16 +175,17 @@ void ClassFilter::Filter(float p)
           }
       }
       if((double)nbPresence/nbKmers > p) {
+          nbSequencesFLT3++;
           std::string transformation = "";
           itKmer.setData (itSeq->getData());
           for (itKmer.first(); !itKmer.isDone(); itKmer.next())
           {
-              int position = m_hashMapTranscript[model.toString (itKmer->value())];
-              if(!position){
+              std::string position = m_hashMapTranscript[model.toString (itKmer->value())];
+              if(position == ""){
                 transformation.append("N ");
               }
               else{
-                transformation.append(std::to_string(position));
+                transformation.append(position);
                 transformation.append(" ");
               }
           }
@@ -184,6 +193,7 @@ void ClassFilter::Filter(float p)
       }
       nbSequences++;
   }
-  TransformationFile.close();
   cout << "FOUND " << nbSequences << " sequences" << endl;
+  std::cout << nbSequencesFLT3 << " Sequences FLT3 write in Project/Results/Transformation.txt" << '\n';
+  TransformationFile.close();
 }
