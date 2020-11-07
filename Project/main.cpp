@@ -21,8 +21,10 @@ int main(int argc, char* argv[]) {
       /** We parse the user options. */
       IProperties* options = parser.parse (argc, argv);
 
+      // étape 1 : Filtrer les données
       ClassFilter filtre(options->getInt(STR_KMER_SIZE), options->getStr(STR_URI_INPUT), options->getStr(STR_URI_SEQUENCES));
       filtre.Filter(0.15);
+
 
 
     }
