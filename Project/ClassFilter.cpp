@@ -2,8 +2,10 @@
 #include <string>
 #include <iostream>
 #include <fstream>
-
+#include <cstring>
 #include "ClassFilter.hpp"
+
+
 
 using namespace std;
 
@@ -28,6 +30,7 @@ puis d'inserer les kmers du gène FLT3 dans le filtre de bloom
 Le filtre de bloom est très effacace en temps pour vérifier la
 présence d'un kmer dans le gène FLT3 car on utilise des tables
 de bits pour stocker les kmers.
+
 */
 void ClassFilter::CreateBloomFilter()
 {
@@ -128,6 +131,9 @@ seulement les séquences FLT3.
 une séquences correspond au gène FLT3 si la ressemblance
 dépasse p.
 
+param p : le taux minimum de ressemblance pour dire qu'une
+          sequance est un gène FLT3.
+
 On va vérifier si chaque séquence correspond au gène FLT3
 grâce au Filtre de Bloom, si la ressemblance est validé
 on va écrire dans un fichier la séquence sous la forme suivante:
@@ -166,6 +172,8 @@ void ClassFilter::Filter(float p)
       u_int64_t nbKmers     = 0;
       u_int64_t nbPresence  = 0;
 
+
+
       // We iterate the kmers.
       for (itKmer.first(); !itKmer.isDone(); itKmer.next())
       {
@@ -174,26 +182,45 @@ void ClassFilter::Filter(float p)
             nbPresence++;
           }
       }
+      // si le kmer correspond à un FLT3
       if((double)nbPresence/nbKmers > p) {
           nbSequencesFLT3++;
-          std::string transformation = "";
+          //
+          list<std::string> transformation;
           itKmer.setData (itSeq->getData());
           for (itKmer.first(); !itKmer.isDone(); itKmer.next())
           {
               std::string position = m_hashMapTranscript[model.toString (itKmer->value())];
               if(position == ""){
-                transformation.append("N ");
+                transformation.push_back("N ");
               }
               else{
-                transformation.append(position);
-                transformation.append(" ");
+                transformation.push_back(position);
+                transformation.push_back(" ");
               }
           }
-          TransformationFile << transformation << "\n\n";
+          result.push_back(transformation);
       }
       nbSequences++;
   }
   cout << "FOUND " << nbSequences << " sequences" << endl;
   std::cout << nbSequencesFLT3 << " Sequences FLT3 write in Project/Results/Transformation.txt" << '\n';
   TransformationFile.close();
+}
+
+
+
+void ClassFilter::printResult(){
+  std::cout << "listes en retour : " << '\n';
+  list<list<std::string>>::iterator itr;
+  for (itr=result.begin(); itr != result.end(); itr++)
+  {
+    list<std::string>tl=*itr;
+    list<std::string>::iterator it;
+    for (it=tl.begin(); it != tl.end(); it++)
+    {
+       cout<<*it;
+    }
+    std::cout << "\n\n" << '\n';
+  }
 }

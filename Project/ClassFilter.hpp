@@ -10,6 +10,7 @@ class ClassFilter
     void CreateBloomFilter();
     void Filter(float p);
     void CreateHashMap();
+    void printResult();
 
 
     private:
@@ -18,6 +19,7 @@ class ClassFilter
     int m_kmerSize;
     bloom_type *m_bloom;
     std::map<std::string, std::string> m_hashMapTranscript;
+    list < list<std::string> > result;
     ofstream TransformationFile;
 
 };
