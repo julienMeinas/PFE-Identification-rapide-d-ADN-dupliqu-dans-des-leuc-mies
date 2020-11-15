@@ -1,13 +1,31 @@
 #include <gatb/gatb_core.hpp>
 #include <iostream>
 #include <string.h>
-#include "ClassFilter.hpp"
+#include "Class/Filter/ClassFilter.hpp"
+#include "Class/Cleaning/ClassCleaning.hpp"
+#include "Class/Breakpoint/ClassBreakpoint.hpp"
 
 #define STR_URI_SEQUENCES   "-sequences"
 
 /*Example: main -in gatb-core/gatb-core/test/db/reads1.fa -kmer-size 11 */
 
-// 1 000 000 de séqeunces en 6min
+
+void displayResult(std::map<std::string, int> mapResult, std::string nomPatient, int nbSeqence) {
+  std::cout << "\n\n\n\n\n\nCompte rendu du patient " << nomPatient << " : " << '\n';
+  std::cout << "Nombre de sequences FLT3 annalysé : " << nbSeqence << '\n';
+  int nbSequenceDefectueuse = 0;
+  for(std::map<std::string, int>::iterator i=mapResult.begin(); i!=mapResult.end(); ++i) {
+    nbSequenceDefectueuse += i->second;
+  }
+  std::cout << nbSequenceDefectueuse << " sequences defecteuse : " << '\n';
+  for(std::map<std::string, int>::iterator i=mapResult.begin(); i!=mapResult.end(); ++i) {
+    std::cout << "Positions du breakpoint : " << i->first << ", occurence : " << i->second << '\n';
+  }
+  std::cout << (double)nbSequenceDefectueuse/nbSeqence*100
+    << " % des cellules sont atteintes" << '\n';
+}
+
+
 int main(int argc, char* argv[]) {
   std::cout << "Run main program \n" << '\n';
 
@@ -24,12 +42,21 @@ int main(int argc, char* argv[]) {
 
       // étape 1 : Filtrer les données
       ClassFilter filtre(options->getInt(STR_KMER_SIZE), options->getStr(STR_URI_INPUT), options->getStr(STR_URI_SEQUENCES));
-      filtre.Filter(0.15);
-      filtre.printResult();
+      filtre.Filter(0.3);
+      //filtre.displayResult();
 
 
+      // étape 2 : nettoyage des données
+      ClassCleaning clean(filtre.getResult());
+      clean.Cleaning();
+      //clean.displayResult();
 
+      // étape 3 : recherche des points d'arrets
+      ClassBreakpoint breakpoint(clean.getResult());
+      breakpoint.Breakpoint();
+      //breakpoint.displayResult();
 
+      displayResult(breakpoint.getMap(), options->getStr(STR_URI_SEQUENCES), clean.getResult().size());
 
 
     }
