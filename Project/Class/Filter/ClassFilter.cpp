@@ -20,7 +20,6 @@ ClassFilter::ClassFilter(int kmerSize, string bankTranscript, string bankSequenc
   m_kmerSize = kmerSize;
   m_bankTranscript = bankTranscript;
   m_bankSequences = bankSequences;
-  TransformationFile.open ("Project/Results/Transformation.txt");
 }
 
 /**
@@ -65,6 +64,12 @@ void ClassFilter::CreateBloomFilter()
   }
 }
 
+
+/**
+
+0 1 2 3 N N N 1 2 3 4
+
+*/
 
 /**
 Permer de créer une table de hashage contenant les kmers
@@ -192,11 +197,10 @@ void ClassFilter::Filter(float p)
           {
               std::string position = m_hashMapTranscript[model.toString (itKmer->value())];
               if(position == ""){
-                transformation.push_back("N ");
+                transformation.push_back("N");
               }
               else{
                 transformation.push_back(position);
-                transformation.push_back(" ");
               }
           }
           result.push_back(transformation);
@@ -205,13 +209,17 @@ void ClassFilter::Filter(float p)
   }
   cout << "FOUND " << nbSequences << " sequences" << endl;
   std::cout << nbSequencesFLT3 << " Sequences FLT3 write in Project/Results/Transformation.txt" << '\n';
-  TransformationFile.close();
+}
+
+
+list < list<std::string> > ClassFilter::getResult() {
+  return result;
 }
 
 
 
-void ClassFilter::printResult(){
-  std::cout << "listes en retour : " << '\n';
+void ClassFilter::displayResult(){
+  std::cout << "listes en retour après le filtre : " << '\n';
   list<list<std::string>>::iterator itr;
   for (itr=result.begin(); itr != result.end(); itr++)
   {
@@ -220,6 +228,7 @@ void ClassFilter::printResult(){
     for (it=tl.begin(); it != tl.end(); it++)
     {
        cout<<*it;
+       std::cout << " ";
     }
     std::cout << "\n\n" << '\n';
   }

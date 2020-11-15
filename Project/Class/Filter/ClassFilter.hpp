@@ -10,7 +10,8 @@ class ClassFilter
     void CreateBloomFilter();
     void Filter(float p);
     void CreateHashMap();
-    void printResult();
+    void displayResult();
+    list < list<std::string> > getResult();
 
 
     private:
