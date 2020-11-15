@@ -26,4 +26,4 @@ $ make gatb <br/>
 
 - Lancement du code : <br/>
 $ make main <br/>
-$ ./Project/main -in ["FLT3 file".fa]  -kmer-size [Kmer_size] -sequences ["Sequences_file".fa]
+$ ./Project/main -in ["FLT3 file"]  -kmer-size [Kmer_size] -sequences ["Sequences file"]
