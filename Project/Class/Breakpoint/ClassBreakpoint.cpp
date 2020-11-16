@@ -88,26 +88,28 @@ void ClassBreakpoint::analyse(std::string elementMemoirePrecedent, std::string e
     // mutation
   }
   else{
-    std::string key = "["+elementMemoirePrecedent+"-"+elementMemoireSuivant+"], Nombre de N entre : " + std::to_string(nbInGroupOfN);
+    std::string key = elementMemoirePrecedent+elementMemoireSuivant+std::to_string(nbInGroupOfN);
     if(m_result[key] == 0) {
-      m_result[key] = 1;
+      BreakPoint *bp = new BreakPoint(std::stoi(elementMemoirePrecedent, nullptr, 10),
+                                      std::stoi(elementMemoireSuivant, nullptr, 10),
+                                    nbInGroupOfN);
+      m_result[key] = bp;
     }
     else{
-      m_result[key] = m_result[key] + 1;
+      m_result[key]->addPoint();
     }
 
   }
 }
 
 
-std::map<std::string, int> ClassBreakpoint::getMap() {
+std::map<std::string, BreakPoint*> ClassBreakpoint::getMap() {
   return m_result;
 }
 
 
+
 void ClassBreakpoint::displayResult() {
   std::cout << "Détaille du patient : " << '\n';
-  for(std::map<std::string, int>::iterator i=m_result.begin(); i!=m_result.end(); ++i) {
-    std::cout << "Détaille : " << i->first << " occurence : " << i->second << endl;
-  }
+
 }
