@@ -68,12 +68,6 @@ void ClassFilter::CreateBloomFilter()
 
 
 /**
-
-0 1 2 3 N N N 1 2 3 4
-
-*/
-
-/**
 Permer de créer une table de hashage contenant les kmers
 dans la variable m_hashMapTranscript
 clé (String) : kmer
