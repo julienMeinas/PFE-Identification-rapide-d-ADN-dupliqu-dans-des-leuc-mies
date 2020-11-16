@@ -5,6 +5,8 @@
 #include <cstring>
 #include "ClassFilter.hpp"
 
+#define BLOOMSIZE       1000000
+#define NHASH_BLOOM     4
 
 
 using namespace std;
@@ -34,8 +36,8 @@ de bits pour stocker les kmers.
 void ClassFilter::CreateBloomFilter()
 {
   std::cout << "create bloom filter : " << '\n';
-  int bloomsize = 1000000;
-  int nhash=4;
+  int bloomsize = BLOOMSIZE;
+  int nhash = NHASH_BLOOM;
   m_bloom = new bloom_type(bloomsize,nhash);
 
   IBank* transcript = Bank::open (m_bankTranscript);
