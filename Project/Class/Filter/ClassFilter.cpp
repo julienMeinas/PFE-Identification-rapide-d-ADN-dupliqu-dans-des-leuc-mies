@@ -203,8 +203,7 @@ void ClassFilter::Filter(float p)
       }
       nbSequences++;
   }
-  cout << "FOUND " << nbSequences << " sequences" << endl;
-  std::cout << nbSequencesFLT3 << " Sequences FLT3 write in Project/Results/Transformation.txt" << '\n';
+  std::cout << "Filtre des sequences fini, " << nbSequences << " trouvées" << "\n\n";
 }
 
 

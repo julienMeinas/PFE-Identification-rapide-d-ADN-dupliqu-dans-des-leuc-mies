@@ -30,6 +30,7 @@ void ClassCleaning::Cleaning() {
     res.push_back(CleaningSequence(sequence));
   }
   m_result = res;
+  std::cout << "Nettoyage fini" << "\n\n";
 }
 
 
@@ -118,7 +119,7 @@ list<string> ClassCleaning::split (string s, string delimiter) {
 }
 
 /**
-Permet d'afficher le resultat 
+Permet d'afficher le resultat
 */
 void ClassCleaning::displayResult() {
   std::cout << "listes en retour après le nettoyage : " << '\n';

@@ -10,7 +10,7 @@ class BreakPoint
   int getNbN();
   int getOccurence();
   void addPoint();
-  void displayResult();
+  std::string displayResult();
 
   private:
   int m_previousPoint;

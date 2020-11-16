@@ -29,6 +29,7 @@ void ClassBreakpoint::Breakpoint() {
     list<std::string> sequence = *itr;
     BreakpointSequence(sequence);
   }
+  std::cout << "Recherche des points d'arrets fini !" << "\n\n";
 }
 
 
@@ -92,7 +93,7 @@ void ClassBreakpoint::analyse(std::string elementMemoirePrecedent, std::string e
     if(m_result[key] == 0) {
       BreakPoint *bp = new BreakPoint(std::stoi(elementMemoirePrecedent, nullptr, 10),
                                       std::stoi(elementMemoireSuivant, nullptr, 10),
-                                    nbInGroupOfN);
+                                      nbInGroupOfN);
       m_result[key] = bp;
     }
     else{
@@ -105,11 +106,4 @@ void ClassBreakpoint::analyse(std::string elementMemoirePrecedent, std::string e
 
 std::map<std::string, BreakPoint*> ClassBreakpoint::getMap() {
   return m_result;
-}
-
-
-
-void ClassBreakpoint::displayResult() {
-  std::cout << "Détaille du patient : " << '\n';
-
 }

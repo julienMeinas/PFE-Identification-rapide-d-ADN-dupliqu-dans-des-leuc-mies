@@ -29,7 +29,10 @@ int BreakPoint::getOccurence() {
   return m_occurence;
 }
 
-void BreakPoint::displayResult() {
-  std::cout << "Positions du breakpoint : " << "[" << m_previousPoint <<
-  " - " << m_nextPoint << "], nombre de N entre les deux : " << m_nbN << ", occurence : " << m_occurence << '\n';
+std::string BreakPoint::displayResult() {
+  std::string res = "";
+  res = ("Positions du breakpoint : [" + std::to_string(m_previousPoint) +
+  " - " + std::to_string(m_nextPoint) + "], nombre de N entre les deux : " + std::to_string(m_nbN)
+   + ", occurence : " + std::to_string(m_occurence) + '\n');
+  return res;
 }
