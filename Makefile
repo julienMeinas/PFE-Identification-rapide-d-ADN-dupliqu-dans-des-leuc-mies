@@ -7,3 +7,4 @@ main:
 
 clean:
 	rm -f Project/main
+	rm -rf Project/Results/*
