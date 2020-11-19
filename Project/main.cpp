@@ -52,6 +52,7 @@ int main(int argc, char* argv[]) {
       // étape 1 : Filtrer les données
       ClassFilter filtre(options->getInt(STR_KMER_SIZE), options->getStr(STR_URI_INPUT), options->getStr(STR_URI_SEQUENCES));
       filtre.Filter(PERCENTAGE_SIMILARITY_FLT3);
+      //filtre.displayResult();
 
       // étape 2 : nettoyage des données
       ClassCleaning clean(filtre.getResult());
@@ -60,7 +61,6 @@ int main(int argc, char* argv[]) {
       // étape 3 : recherche des points d'arrets
       ClassBreakpoint breakpoint(clean.getResult());
       breakpoint.Breakpoint();
-
 
 
       displayResult(breakpoint.getMap(), options->getStr(STR_URI_SEQUENCES), clean.getResult().size());

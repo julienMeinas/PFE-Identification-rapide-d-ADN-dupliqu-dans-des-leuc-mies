@@ -11,7 +11,8 @@ class ClassFilter
     void Filter(float p);
     void CreateHashMap();
     void displayResult();
-    list < list<std::string> > getResult();
+    list < list< list<int> > > getResult();
+    list<string> split (string s, string delimiter);
 
 
     private:
@@ -20,7 +21,7 @@ class ClassFilter
     int m_kmerSize;
     bloom_type *m_bloom;
     std::map<std::string, std::string> m_hashMapTranscript;
-    list < list<std::string> > result;
+    list < list< list<int> > > result;
     ofstream TransformationFile;
 
 };

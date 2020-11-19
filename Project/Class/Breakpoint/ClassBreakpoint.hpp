@@ -7,18 +7,17 @@
 class ClassBreakpoint
 {
     public:
-    ClassBreakpoint(list < list<std::string> > result);
+    ClassBreakpoint(list < list<int> > result);
     void Breakpoint();
-    void BreakpointSequence(list<std::string> sequence);
-    void analyse(std::string elementMemoirePrecedent, std::string elementMemoireSuivant, int nbInGroupOfN);
+    void BreakpointSequence(list<int> sequence);
+    void analyse(int elementMemoirePrecedent, int elementMemoireSuivant, int nbInGroupOfN);
     void displayResult();
     std::map<std::string, BreakPoint*> getMap();
-    void addPoint(std::string elementMemoirePrecedent, std::string elementMemoireSuivant, int nbInGroupOfN);
 
 
 
 
     private:
-    list < list<std::string> > m_sequences;
+    list < list<int> > m_sequences;
     std::map<std::string, BreakPoint*> m_result;
 };

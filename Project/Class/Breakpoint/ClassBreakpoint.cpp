@@ -11,7 +11,7 @@ using namespace std;
 Classe permettant de réaliser l'étape 3 c'est à dire de trouver
 les points d'arrets.
 */
-ClassBreakpoint::ClassBreakpoint(list < list<std::string> > sequence)
+ClassBreakpoint::ClassBreakpoint(list < list<int> > sequence)
 {
   m_sequences = sequence;
 }
@@ -23,10 +23,10 @@ pour trouver des points d'arrets
 */
 void ClassBreakpoint::Breakpoint() {
   std::cout << "recherche de points d'arrets de la liste de sequences FLT3 : " << '\n';
-  list<list<std::string>>::iterator itr;
+  list<list<int>>::iterator itr;
   for (itr=m_sequences.begin(); itr != m_sequences.end(); itr++)
   {
-    list<std::string> sequence = *itr;
+    list<int> sequence = *itr;
     BreakpointSequence(sequence);
   }
   std::cout << "Recherche des points d'arrets fini !" << "\n\n";
@@ -37,20 +37,21 @@ void ClassBreakpoint::Breakpoint() {
 Permet de trouver un possible point d'arret sur la sequence
 en parametre et la stocker dans la hashmap m_result
 */
-void ClassBreakpoint::BreakpointSequence(list<std::string> sequence) {
-  list<std::string>::iterator it;
+void ClassBreakpoint::BreakpointSequence(list<int> sequence) {
+  list<int>::iterator it;
 
-  int inGroupOfN = 0;
-  int nbInGroupOfN = 0;
-  std::string elementMemoirePrecedent = "";
-  std::string elementMemoire = "";
+  int inGroupOfN               = 0;
+  int nbInGroupOfN             = 0;
+  int elementMemoirePrecedent  = -1;
+  int elementMemoire           = -1;
+
   for (it=sequence.begin(); it != sequence.end(); it++)
   {
-    std::string element = *it;
-    if(element == "N") {
+    int element = *it;
+    if(element == -1) {
       inGroupOfN = 1;
       nbInGroupOfN++;
-      if(elementMemoire != "N") {
+      if(elementMemoire != -1) {
         elementMemoirePrecedent = elementMemoire;
       }
     }
@@ -81,18 +82,18 @@ s1 est une mutation car 170 + 8 + 1 = 179
 s2 n'est pas une mutation car 170 + 8 + 1 != 139
   donc une possible duplication en tandem
 */
-void ClassBreakpoint::analyse(std::string elementMemoirePrecedent, std::string elementMemoireSuivant, int nbInGroupOfN) {
-  if(elementMemoireSuivant == "N" || elementMemoirePrecedent == "N" || elementMemoirePrecedent == "") {
+void ClassBreakpoint::analyse(int elementMemoirePrecedent, int elementMemoireSuivant, int nbInGroupOfN) {
+  if(elementMemoireSuivant == -1 || elementMemoirePrecedent == -1 || elementMemoirePrecedent == -1) {
     return;
   }
-  if(std::stoi(elementMemoirePrecedent, nullptr, 10) + nbInGroupOfN + 1 == std::stoi(elementMemoireSuivant, nullptr, 10)) {
+  if(elementMemoirePrecedent + nbInGroupOfN + 1 == elementMemoireSuivant) {
     // mutation
   }
   else{
-    std::string key = elementMemoirePrecedent+elementMemoireSuivant+std::to_string(nbInGroupOfN);
+    std::string key = std::to_string(elementMemoirePrecedent)+"-"+std::to_string(elementMemoireSuivant)+"-"+std::to_string(nbInGroupOfN);
     if(m_result[key] == 0) {
-      BreakPoint *bp = new BreakPoint(std::stoi(elementMemoirePrecedent, nullptr, 10),
-                                      std::stoi(elementMemoireSuivant, nullptr, 10),
+      BreakPoint *bp = new BreakPoint(elementMemoirePrecedent,
+                                      elementMemoireSuivant,
                                       nbInGroupOfN);
       m_result[key] = bp;
     }

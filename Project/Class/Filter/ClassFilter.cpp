@@ -187,19 +187,29 @@ void ClassFilter::Filter(float p)
       if((double)nbPresence/nbKmers > p) {
           nbSequencesFLT3++;
           //
-          list<std::string> transformation;
+          list< list<int> > sequence;
           itKmer.setData (itSeq->getData());
           for (itKmer.first(); !itKmer.isDone(); itKmer.next())
           {
               std::string position = m_hashMapTranscript[model.toString (itKmer->value())];
               if(position == ""){
-                transformation.push_back("N");
+                list<int> l;
+                l.push_back(-1);
+                sequence.push_back(l);
               }
               else{
-                transformation.push_back(position);
+                list<string> positions = split(position, ";");
+                list<int> l;
+                list<string>::iterator itr;
+                for (itr=positions.begin(); itr != positions.end(); itr++)
+                {
+                  string str = *itr;
+                  l.push_back(std::stoi(str, nullptr, 10));
+                }
+                sequence.push_back(l);
               }
           }
-          result.push_back(transformation);
+          result.push_back(sequence);
       }
       nbSequences++;
   }
@@ -207,7 +217,25 @@ void ClassFilter::Filter(float p)
 }
 
 
-list < list<std::string> > ClassFilter::getResult() {
+
+// for string delimiter
+list<string> ClassFilter::split (string s, string delimiter) {
+    size_t pos_start = 0, pos_end, delim_len = delimiter.length();
+    string token;
+    list<string> res;
+
+    while ((pos_end = s.find (delimiter, pos_start)) != string::npos) {
+        token = s.substr (pos_start, pos_end - pos_start);
+        pos_start = pos_end + delim_len;
+        res.push_back (token);
+    }
+
+    res.push_back (s.substr (pos_start));
+    return res;
+}
+
+
+list < list< list<int> > > ClassFilter::getResult() {
   return result;
 }
 
@@ -215,14 +243,29 @@ list < list<std::string> > ClassFilter::getResult() {
 
 void ClassFilter::displayResult(){
   std::cout << "listes en retour après le filtre : " << '\n';
-  list<list<std::string>>::iterator itr;
+  list< list< list<int> > >::iterator itr;
   for (itr=result.begin(); itr != result.end(); itr++)
   {
-    list<std::string>tl=*itr;
-    list<std::string>::iterator it;
-    for (it=tl.begin(); it != tl.end(); it++)
+    list<list<int>>sequence=*itr;
+    list< list<int> >::iterator it;
+    for (it=sequence.begin(); it != sequence.end(); it++)
     {
-       cout<<*it;
+       list<int> positions = *it;
+       int nb = positions.size();
+       list<int>::iterator i;
+       for (i=positions.begin(); i != positions.end(); i++) {
+         int position = *i;
+         if(position == -1) {
+           std::cout << "N ";
+         }
+         else{
+           std::cout << position;
+           if(nb > 1) {
+             std::cout << ";";
+             nb--;
+           }
+         }
+       }
        std::cout << " ";
     }
     std::cout << "\n\n" << '\n';

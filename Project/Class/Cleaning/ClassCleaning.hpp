@@ -4,15 +4,15 @@
 class ClassCleaning
 {
     public:
-    ClassCleaning(list < list<std::string> > result);
+    ClassCleaning(list < list< list<int> > > result);
     void Cleaning();
-    list<std::string> CleaningSequence(list<std::string> sequence);
+    list< int > CleaningSequence(list< list<int> > sequence);
     void displayResult();
-    list < list<std::string> > getResult();
-    std::string findPosition(std::string elementMemoire, std::string element);
-    list<string> split (string s, string delimiter);
+    list < list<int> > getResult();
+    int findPosition(int elementMemoire, list<int> element);
 
     private:
-    list < list<std::string> > m_result;
+    list < list< list<int> > > m_list;
+    list < list<int> > m_result;
 
 };
