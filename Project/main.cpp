@@ -8,13 +8,14 @@
 
 #define STR_URI_SEQUENCES               "-sequences"
 #define PERCENTAGE_SIMILARITY_FLT3      0.3
+#define FILTRE_DUPLICATION_OCCURENCE_1  0
 
 /*Example: main -in gatb-core/gatb-core/test/db/reads1.fa -kmer-size 11 */
 
 
 // une première version d'affichage du resultat qui sera bien sûr modifié
 // par la suite
-void displayResult(std::map<std::string, BreakPoint*> mapResult, std::string nomPatient, int nbSeqence) {
+void displayResult(std::map<std::string, BreakPoint*> mapResult, std::string nomPatient, int nbSeqence, int filtreOccurence1) {
   ofstream m_resultFile;
   nomPatient.replace(8, 4, "Results");
   std::cout << "Rapport écrit dans le fichier " << nomPatient << '\n';
@@ -23,12 +24,26 @@ void displayResult(std::map<std::string, BreakPoint*> mapResult, std::string nom
   m_resultFile << "Nombre de sequences FLT3 annalysé : " << nbSeqence << "\n\n";
   int nbSequenceDefectueuse = 0;
   for(std::map<std::string, BreakPoint*>::iterator i=mapResult.begin(); i!=mapResult.end(); ++i) {
-    nbSequenceDefectueuse += i->second->getOccurence();
+    if(i->second->getOccurence() == 1) {
+      if(filtreOccurence1 != 1) {
+        nbSequenceDefectueuse += i->second->getOccurence();
+      }
+    }
+    else{
+        nbSequenceDefectueuse += i->second->getOccurence();
+    }
   }
   m_resultFile << "Nombre de duplications en tandem : " << nbSequenceDefectueuse << "\n";
   m_resultFile << "Détaille de ces duplications : " << "\n";
   for(std::map<std::string, BreakPoint*>::iterator i=mapResult.begin(); i!=mapResult.end(); ++i) {
-    m_resultFile << i->second->displayResult();
+    if(i->second->getOccurence() == 1) {
+      if(filtreOccurence1 != 1) {
+        m_resultFile << i->second->displayResult();
+      }
+    }
+    else{
+        m_resultFile << i->second->displayResult();
+    }
   }
   m_resultFile << (double)nbSequenceDefectueuse/nbSeqence*100
     << " % des cellules sont atteintes" << '\n';
@@ -63,7 +78,7 @@ int main(int argc, char* argv[]) {
       breakpoint.Breakpoint();
 
 
-      displayResult(breakpoint.getMap(), options->getStr(STR_URI_SEQUENCES), clean.getResult().size());
+      displayResult(breakpoint.getMap(), options->getStr(STR_URI_SEQUENCES), clean.getResult().size(), FILTRE_DUPLICATION_OCCURENCE_1);
 
 
 
