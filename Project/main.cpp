@@ -8,7 +8,9 @@
 
 #define STR_URI_SEQUENCES               "-sequences"
 #define PERCENTAGE_SIMILARITY_FLT3      0.3
-#define FILTRE_DUPLICATION_OCCURENCE_1  0
+#define FILTRE_DUPLICATION_OCCURENCE_1  1
+#define DISPLAY_SEQUENCE                1
+#define DISPLAY_SEQUENCE_BEFORE_CLEAN   1
 
 /*Example: main -in gatb-core/gatb-core/test/db/reads1.fa -kmer-size 11 */
 
@@ -39,10 +41,22 @@ void displayResult(std::map<std::string, BreakPoint*> mapResult, std::string nom
     if(i->second->getOccurence() == 1) {
       if(filtreOccurence1 != 1) {
         m_resultFile << i->second->displayResult();
+        if(DISPLAY_SEQUENCE == 1) {
+          m_resultFile << i->second->displaySequences();
+        }
+        if(DISPLAY_SEQUENCE_BEFORE_CLEAN == 1) {
+          m_resultFile << i->second->displaySequencesBeforeCleaning();
+        }
       }
     }
     else{
         m_resultFile << i->second->displayResult();
+        if(DISPLAY_SEQUENCE == 1) {
+          m_resultFile << i->second->displaySequences();
+        }
+        if(DISPLAY_SEQUENCE_BEFORE_CLEAN == 1) {
+          m_resultFile << i->second->displaySequencesBeforeCleaning();
+        }
     }
   }
   m_resultFile << (double)nbSequenceDefectueuse/nbSeqence*100
@@ -69,20 +83,21 @@ int main(int argc, char* argv[]) {
       filtre.Filter(PERCENTAGE_SIMILARITY_FLT3);
       //filtre.displayResult();
 
+
       // étape 2 : nettoyage des données
       ClassCleaning clean(filtre.getResult());
       clean.Cleaning();
 
       // étape 3 : recherche des points d'arrets
-      ClassBreakpoint breakpoint(clean.getResult());
+      ClassBreakpoint breakpoint(clean.getResult(), filtre.getResult());
       breakpoint.Breakpoint();
 
 
       displayResult(breakpoint.getMap(), options->getStr(STR_URI_SEQUENCES), clean.getResult().size(), FILTRE_DUPLICATION_OCCURENCE_1);
+      std::cout << "taille avant : " << filtre.getResult().size() << '\n';
+      std::cout << "taille après : " << clean.getResult().size() << '\n';
 
-
-
-
+      
 
 
 

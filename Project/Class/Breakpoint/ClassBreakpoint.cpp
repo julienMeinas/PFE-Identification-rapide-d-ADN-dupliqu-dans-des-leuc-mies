@@ -11,9 +11,11 @@ using namespace std;
 Classe permettant de réaliser l'étape 3 c'est à dire de trouver
 les points d'arrets.
 */
-ClassBreakpoint::ClassBreakpoint(list < list<int> > sequence)
+ClassBreakpoint::ClassBreakpoint(list < list<int> > sequence, list< list< list<int> > > sequenceBeforeCleaning)
 {
   m_sequences = sequence;
+  m_sequenceBeforeCleaning = sequenceBeforeCleaning;
+  m_cpt = 1;
 }
 
 
@@ -28,6 +30,7 @@ void ClassBreakpoint::Breakpoint() {
   {
     list<int> sequence = *itr;
     BreakpointSequence(sequence);
+    m_cpt++;
   }
   std::cout << "Recherche des points d'arrets fini !" << "\n\n";
 }
@@ -57,7 +60,7 @@ void ClassBreakpoint::BreakpointSequence(list<int> sequence) {
     }
     else{
       if(inGroupOfN == 1) {
-        analyse(elementMemoirePrecedent, element, nbInGroupOfN);
+        analyse(elementMemoirePrecedent, element, nbInGroupOfN, sequence);
         nbInGroupOfN = 0;
         inGroupOfN = 0;
       }
@@ -82,7 +85,7 @@ s1 est une mutation car 170 + 8 + 1 = 179
 s2 n'est pas une mutation car 170 + 8 + 1 != 139
   donc une possible duplication en tandem
 */
-void ClassBreakpoint::analyse(int elementMemoirePrecedent, int elementMemoireSuivant, int nbInGroupOfN) {
+void ClassBreakpoint::analyse(int elementMemoirePrecedent, int elementMemoireSuivant, int nbInGroupOfN, list<int> sequence) {
   if(elementMemoireSuivant == -1 || elementMemoirePrecedent == -1 || elementMemoirePrecedent == -1) {
     return;
   }
@@ -94,13 +97,16 @@ void ClassBreakpoint::analyse(int elementMemoirePrecedent, int elementMemoireSui
     if(m_result[key] == 0) {
       BreakPoint *bp = new BreakPoint(elementMemoirePrecedent,
                                       elementMemoireSuivant,
-                                      nbInGroupOfN);
+                                      nbInGroupOfN,
+                                      m_sequenceBeforeCleaning);
       m_result[key] = bp;
+      m_result[key]->addCptToList(m_cpt);
     }
     else{
       m_result[key]->addPoint();
+      m_result[key]->addCptToList(m_cpt);
     }
-
+    m_result[key]->addSequence(sequence);
   }
 }
 
