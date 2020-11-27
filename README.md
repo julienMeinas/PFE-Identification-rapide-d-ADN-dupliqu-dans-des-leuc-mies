@@ -27,3 +27,6 @@ $ make main <br/>
 
 - Lancement du code : <br/>
 $ ./Project/main -in ["FLT3 file"]  -kmer-size [Kmer_size] -sequences ["Sequences file"]
+
+exemple : 
+./Project/main -in Project/Data/FLT3.fa -kmer-size 15 -sequences Project/Data/P8-L1810648D09.fastq.gz
