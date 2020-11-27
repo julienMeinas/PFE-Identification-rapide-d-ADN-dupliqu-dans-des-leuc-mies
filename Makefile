@@ -1,5 +1,7 @@
 
-
+gatb:
+	git clone https://github.com/GATB/gatb-core.git;
+	cd gatb-core/gatb-core; mkdir build ; cd build ; cmake .. ; make -j8
 
 # change this to the folder where gatb-core is
 GATB=$(shell pwd)/gatb-core/gatb-core/
