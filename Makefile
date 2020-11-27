@@ -16,7 +16,7 @@ clean:
 	rm -rf Project/main
 	rm -rf Project/Results/*
 
-main:
+%: %.cpp
 	$(CXX) $(CXXFLAGS) $^ Project/Class/Filter/ClassFilter.cpp Project/Class/Cleaning/ClassCleaning.cpp Project/Class/Breakpoint/ClassBreakpoint.cpp Project/Class/Breakpoint/BreakPoint.cpp -o $@  $(LDFLAGS)
 
 run_main:
