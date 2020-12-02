@@ -1,0 +1,37 @@
+Compte rendu des sequences Project/Results/P6-L1806928D04.fastq.gz : 
+
+Nombre de sequences FLT3 annalysé : 7362
+
+Nombre de duplications en tandem : 281
+Détaille de ces duplications : 
+
+
+Positions du breakpoint : 289 [274 - 239], nombre de N entre les deux : 27, occurence : 2
+
+
+Positions du breakpoint : 298 [283 - 239], nombre de N entre les deux : 18, occurence : 255
+
+
+Positions du breakpoint : 298 [283 - 240], nombre de N entre les deux : 19, occurence : 2
+
+
+Positions du breakpoint : 298 [283 - 243], nombre de N entre les deux : 22, occurence : 2
+
+
+Positions du breakpoint : 298 [283 - 244], nombre de N entre les deux : 23, occurence : 3
+
+
+Positions du breakpoint : 298 [283 - 245], nombre de N entre les deux : 24, occurence : 2
+
+
+Positions du breakpoint : 298 [283 - 248], nombre de N entre les deux : 27, occurence : 2
+
+
+Positions du breakpoint : 298 [283 - 251], nombre de N entre les deux : 30, occurence : 3
+
+
+Positions du breakpoint : 299 [284 - 239], nombre de N entre les deux : 17, occurence : 8
+
+
+Positions du breakpoint : 299 [284 - 263], nombre de N entre les deux : 41, occurence : 2
+3.8169 % des cellules sont atteintes
