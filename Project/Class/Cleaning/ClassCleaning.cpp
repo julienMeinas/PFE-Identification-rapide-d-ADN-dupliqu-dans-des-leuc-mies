@@ -1,6 +1,4 @@
 #include "ClassCleaning.hpp"
-#include <iostream>
-#include <string>
 
 
 using namespace std;
@@ -11,7 +9,7 @@ Classe permettant de réaliser l'étape 2 c'est à dire de nettoyer
 l'ensemble de séquences afin d'y voir plus clair pour la recherche
 des points d'arrets
 */
-ClassCleaning::ClassCleaning(list < list< list<int> > > result)
+ClassCleaning::ClassCleaning(std::list < std::list< std::list<int> > > result)
 {
   m_list = result;
 }
@@ -20,20 +18,20 @@ ClassCleaning::ClassCleaning(list < list< list<int> > > result)
 void ClassCleaning::Cleaning()
 {
   std::cout << "Nettoyage de la liste de sequences FLT3 : " << '\n';
-  list< list<int> > res;
-  list< list< list<int> > >::iterator itr;
+  std::list< std::list<int> > res;
+  std::list< std::list< std::list<int> > >::iterator itr;
   for(itr = m_list.begin(); itr != m_list.end(); itr++) {
-    list< list<int> > sequence = *itr;
+    std::list< std::list<int> > sequence = *itr;
     res.push_back(CleaningSequence(sequence));
   }
   m_result = res;
   std::cout << "Nettoyage fini" << "\n\n";
 }
 
-list< int > ClassCleaning::CleaningSequence(list< list<int> > sequence)
+std::list< int > ClassCleaning::CleaningSequence(std::list< std::list<int> > sequence)
 {
-  list< int > res;
-  list< list<int> >::iterator it;
+  std::list< int > res;
+  std::list< std::list<int> >::iterator it;
 
   int elementMemoire  = 0;
   int startGroupOfN   = 0;
@@ -42,7 +40,7 @@ list< int > ClassCleaning::CleaningSequence(list< list<int> > sequence)
 
   for(it=sequence.begin(); it!= sequence.end(); it++)
   {
-    list<int> positions = *it;
+    std::list<int> positions = *it;
     // si l'élément présent est un "N"
     if(positions.front() == -1) {
       // si nous ne somme plus dans le premier groupe de N
@@ -82,7 +80,7 @@ list< int > ClassCleaning::CleaningSequence(list< list<int> > sequence)
 }
 
 
-int ClassCleaning::findPosition(int elementMemoire, list<int> element){
+int ClassCleaning::findPosition(int elementMemoire, std::list<int> element){
   // si l'élément précedent est unitilisable
   if(elementMemoire == -1 || elementMemoire == 0) {
     // si la position est unique alors on la renvoie
@@ -117,7 +115,7 @@ int ClassCleaning::findPosition(int elementMemoire, list<int> element){
 
 
 
-list < list< int > > ClassCleaning::getResult()
+std::list < std::list< int > > ClassCleaning::getResult()
 {
   return m_result;
 }
@@ -126,10 +124,10 @@ list < list< int > > ClassCleaning::getResult()
 void ClassCleaning::displayResult() {
   std::cout << "listes en retour après le nettoyage : " << '\n';
   std::cout << m_result.size() << '\n';
-  list< list<int> >::iterator itr;
+  std::list< std::list<int> >::iterator itr;
   for(itr = m_result.begin(); itr != m_result.end(); itr++) {
-    list<int> sequence = *itr;
-    list<int>::iterator it;
+    std::list<int> sequence = *itr;
+    std::list<int>::iterator it;
     for(it = sequence.begin(); it != sequence.end(); it++) {
       int pos = *it;
       if(pos == -1) {

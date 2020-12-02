@@ -1,5 +1,7 @@
-#include <string>
 #include <gatb/gatb_core.hpp>
+#include <string>
+#include <cstring>
+
 
 typedef Bloom<Kmer<>::Type> bloom_type;
 

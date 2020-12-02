@@ -1,7 +1,7 @@
 #include "BreakPoint.hpp"
 
 // Class Breakpoint
-BreakPoint::BreakPoint(int previousPoint, int nextPoint, int nbN, list< list< list<int> > > sequenceBeforeCleaning) {
+BreakPoint::BreakPoint(int previousPoint, int nextPoint, int nbN, std::list< std::list< std::list<int> > > sequenceBeforeCleaning) {
   m_previousPoint = previousPoint;
   m_nextPoint = nextPoint;
   m_nbN = nbN;
@@ -26,11 +26,11 @@ void BreakPoint::addPoint() {
   m_occurence++;
 }
 
-void BreakPoint::addSequence(list<int> sequence) {
+void BreakPoint::addSequence(std::list<int> sequence) {
   m_sequence.push_back(sequence);
 }
 
-void BreakPoint::addSequenceBeforeCleaning(list< list<int> > sequenceBeforeCleaning) {
+void BreakPoint::addSequenceBeforeCleaning(std::list< std::list<int> > sequenceBeforeCleaning) {
   m_sequenceBeforeCleaning.push_back(sequenceBeforeCleaning);
 }
 
@@ -50,12 +50,12 @@ std::string BreakPoint::displayResult() {
 
 std::string BreakPoint::displaySequences() {
   std::string res;
-  list< list<int> >::iterator itr;
+  std::list< std::list<int> >::iterator itr;
   int cpt = 1;
   res = res + "\n\n\nSeqence après le nettoyage : \n";
   for(itr = m_sequence.begin(); itr != m_sequence.end(); itr++) {
-    list<int> sequence = *itr;
-    list<int>::iterator it;
+    std::list<int> sequence = *itr;
+    std::list<int>::iterator it;
     res = res + std::to_string(cpt++) + " : ";
     for(it = sequence.begin(); it != sequence.end(); it++) {
       int pos = *it;
@@ -72,7 +72,7 @@ std::string BreakPoint::displaySequences() {
 }
 
 
-int BreakPoint::contains(int var, list<int> list) {
+int BreakPoint::contains(int var, std::list<int> list) {
   std::list<int>::iterator itr;
   for(itr = list.begin(); itr != list.end(); itr++) {
     int el = *itr;
@@ -85,21 +85,21 @@ int BreakPoint::contains(int var, list<int> list) {
 
 std::string BreakPoint::displaySequencesBeforeCleaning(){
   std::string res;
-  list< list< list<int> > >::iterator itr;
+  std::list< std::list< std::list<int> > >::iterator itr;
   int cpt = 1;
   int indice = 1;
   res = res + "\n\n\nsequence avant le nettoyage : \n";
   for (itr=m_sequenceBeforeCleaning.begin(); itr != m_sequenceBeforeCleaning.end(); itr++)
   {
     if(contains(cpt, m_listCpt) == 1){
-      list<list<int>>sequence=*itr;
-      list< list<int> >::iterator it;
+      std::list< std::list<int> >sequence=*itr;
+      std::list< std::list<int> >::iterator it;
       res = res + std::to_string(indice++) + " : ";
       for (it=sequence.begin(); it != sequence.end(); it++)
       {
-         list<int> positions = *it;
+         std::list<int> positions = *it;
          int nb = positions.size();
-         list<int>::iterator i;
+         std::list<int>::iterator i;
          for (i=positions.begin(); i != positions.end(); i++) {
            int position = *i;
            if(position == -1) {

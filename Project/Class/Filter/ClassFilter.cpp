@@ -1,8 +1,3 @@
-#include <gatb/gatb_core.hpp>
-#include <string>
-#include <iostream>
-#include <fstream>
-#include <cstring>
 #include "ClassFilter.hpp"
 
 #define BLOOMSIZE       1000000

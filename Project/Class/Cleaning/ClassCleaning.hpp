@@ -1,18 +1,19 @@
 #include <string>
-#include <gatb/gatb_core.hpp>
+#include <list>
+#include <iostream>
 
 class ClassCleaning
 {
     public:
-    ClassCleaning(list < list< list<int> > > result);
+    ClassCleaning(std::list < std::list< std::list<int> > > result);
     void Cleaning();
-    list< int > CleaningSequence(list< list<int> > sequence);
+    std::list< int > CleaningSequence(std::list< std::list<int> > sequence);
     void displayResult();
-    list < list<int> > getResult();
-    int findPosition(int elementMemoire, list<int> element);
+    std::list < std::list<int> > getResult();
+    int findPosition(int elementMemoire, std::list<int> element);
 
     private:
-    list < list< list<int> > > m_list;
-    list < list<int> > m_result;
+    std::list < std::list< std::list<int> > > m_list;
+    std::list < std::list<int> > m_result;
 
 };

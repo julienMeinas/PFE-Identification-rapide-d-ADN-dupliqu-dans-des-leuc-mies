@@ -11,7 +11,7 @@ using namespace std;
 Classe permettant de réaliser l'étape 3 c'est à dire de trouver
 les points d'arrets.
 */
-ClassBreakpoint::ClassBreakpoint(list < list<int> > sequence, list< list< list<int> > > sequenceBeforeCleaning)
+ClassBreakpoint::ClassBreakpoint(std::list < std::list<int> > sequence, std::list< std::list< std::list<int> > > sequenceBeforeCleaning)
 {
   m_sequences = sequence;
   m_sequenceBeforeCleaning = sequenceBeforeCleaning;
@@ -25,10 +25,10 @@ pour trouver des points d'arrets
 */
 void ClassBreakpoint::Breakpoint() {
   std::cout << "recherche de points d'arrets de la liste de sequences FLT3 : " << '\n';
-  list<list<int>>::iterator itr;
+  std::list< std::list<int> >::iterator itr;
   for (itr=m_sequences.begin(); itr != m_sequences.end(); itr++)
   {
-    list<int> sequence = *itr;
+    std::list<int> sequence = *itr;
     BreakpointSequence(sequence);
     m_cpt++;
   }
@@ -40,8 +40,8 @@ void ClassBreakpoint::Breakpoint() {
 Permet de trouver un possible point d'arret sur la sequence
 en parametre et la stocker dans la hashmap m_result
 */
-void ClassBreakpoint::BreakpointSequence(list<int> sequence) {
-  list<int>::iterator it;
+void ClassBreakpoint::BreakpointSequence(std::list<int> sequence) {
+  std::list<int>::iterator it;
 
   int inGroupOfN               = 0;
   int nbInGroupOfN             = 0;
@@ -85,7 +85,7 @@ s1 est une mutation car 170 + 8 + 1 = 179
 s2 n'est pas une mutation car 170 + 8 + 1 != 139
   donc une possible duplication en tandem
 */
-void ClassBreakpoint::analyse(int elementMemoirePrecedent, int elementMemoireSuivant, int nbInGroupOfN, list<int> sequence) {
+void ClassBreakpoint::analyse(int elementMemoirePrecedent, int elementMemoireSuivant, int nbInGroupOfN, std::list<int> sequence) {
   if(elementMemoireSuivant == -1 || elementMemoirePrecedent == -1 || elementMemoirePrecedent == -1) {
     return;
   }

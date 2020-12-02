@@ -1,6 +1,3 @@
-#include <gatb/gatb_core.hpp>
-#include <iostream>
-#include <fstream>
 #include <string.h>
 #include "Class/Filter/ClassFilter.hpp"
 #include "Class/Cleaning/ClassCleaning.hpp"
@@ -9,8 +6,8 @@
 #define STR_URI_SEQUENCES               "-sequences"
 #define PERCENTAGE_SIMILARITY_FLT3      0.3
 #define FILTRE_DUPLICATION_OCCURENCE_1  1
-#define DISPLAY_SEQUENCE                1
-#define DISPLAY_SEQUENCE_BEFORE_CLEAN   1
+#define DISPLAY_SEQUENCE                0
+#define DISPLAY_SEQUENCE_BEFORE_CLEAN   0
 
 /*Example: main -in gatb-core/gatb-core/test/db/reads1.fa -kmer-size 11 */
 
@@ -97,7 +94,7 @@ int main(int argc, char* argv[]) {
       std::cout << "taille avant : " << filtre.getResult().size() << '\n';
       std::cout << "taille après : " << clean.getResult().size() << '\n';
 
-      
+
 
 
 
