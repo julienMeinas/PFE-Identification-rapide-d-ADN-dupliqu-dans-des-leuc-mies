@@ -9,12 +9,11 @@
 #define DISPLAY_SEQUENCE                0
 #define DISPLAY_SEQUENCE_BEFORE_CLEAN   0
 
-/*Example: main -in gatb-core/gatb-core/test/db/reads1.fa -kmer-size 11 */
 
 
 // une première version d'affichage du resultat qui sera bien sûr modifié
 // par la suite
-void displayResult(std::map<std::string, BreakPoint*> mapResult, std::string nomPatient, int nbSeqence, int filtreOccurence1) {
+void displayResult(std::map<std::string, BreakPoint*> mapResult, std::string nomPatient, int nbSeqence, int filtreOccurence1, int kmer_size) {
   ofstream m_resultFile;
   nomPatient.replace(8, 4, "Results");
   std::cout << "Rapport écrit dans le fichier " << nomPatient << '\n';
@@ -37,7 +36,7 @@ void displayResult(std::map<std::string, BreakPoint*> mapResult, std::string nom
   for(std::map<std::string, BreakPoint*>::iterator i=mapResult.begin(); i!=mapResult.end(); ++i) {
     if(i->second->getOccurence() == 1) {
       if(filtreOccurence1 != 1) {
-        m_resultFile << i->second->displayResult();
+        m_resultFile << i->second->displayResult(kmer_size);
         if(DISPLAY_SEQUENCE == 1) {
           m_resultFile << i->second->displaySequences();
         }
@@ -47,7 +46,7 @@ void displayResult(std::map<std::string, BreakPoint*> mapResult, std::string nom
       }
     }
     else{
-        m_resultFile << i->second->displayResult();
+        m_resultFile << i->second->displayResult(kmer_size);
         if(DISPLAY_SEQUENCE == 1) {
           m_resultFile << i->second->displaySequences();
         }
@@ -90,7 +89,7 @@ int main(int argc, char* argv[]) {
       breakpoint.Breakpoint();
 
 
-      displayResult(breakpoint.getMap(), options->getStr(STR_URI_SEQUENCES), clean.getResult().size(), FILTRE_DUPLICATION_OCCURENCE_1);
+      displayResult(breakpoint.getMap(), options->getStr(STR_URI_SEQUENCES), clean.getResult().size(), FILTRE_DUPLICATION_OCCURENCE_1, options->getInt(STR_KMER_SIZE));
       std::cout << "taille avant : " << filtre.getResult().size() << '\n';
       std::cout << "taille après : " << clean.getResult().size() << '\n';
 
