@@ -1,5 +1,6 @@
 #include "ClassBreakpoint.hpp"
 
+#define PERCENTAGE_FIABILITY_SEQUENCE 0.5
 
 
 using namespace std;
@@ -94,7 +95,7 @@ void ClassBreakpoint::analyse(int elementMemoirePrecedent, int elementMemoireSui
   }
   else{
     double nbIncoherence_nbKmer = verificationSequence(sequence);
-    if(nbIncoherence_nbKmer > 0.5){
+    if(nbIncoherence_nbKmer > PERCENTAGE_FIABILITY_SEQUENCE){
       return;
     }
     std::string key = std::to_string(elementMemoirePrecedent)+"-"+std::to_string(elementMemoireSuivant)+"-"+std::to_string(nbInGroupOfN);
