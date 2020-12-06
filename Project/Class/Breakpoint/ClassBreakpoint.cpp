@@ -43,11 +43,11 @@ en parametre et la stocker dans la hashmap m_result
 void ClassBreakpoint::BreakpointSequence(std::list<int> sequence) {
   std::list<int>::iterator it;
 
-  int inGroupOfN               = 0;
-  int nbInGroupOfN             = 0;
+  int inGroupOfN               =  0;
+  int nbInGroupOfN             =  0;
   int elementMemoirePrecedent  = -1;
   int elementMemoire           = -1;
-
+  
   for (it=sequence.begin(); it != sequence.end(); it++)
   {
     int element = *it;
@@ -93,6 +93,10 @@ void ClassBreakpoint::analyse(int elementMemoirePrecedent, int elementMemoireSui
     // mutation
   }
   else{
+    double nbIncoherence_nbKmer = verificationSequence(sequence);
+    if(nbIncoherence_nbKmer > 0.5){
+      return;
+    }
     std::string key = std::to_string(elementMemoirePrecedent)+"-"+std::to_string(elementMemoireSuivant)+"-"+std::to_string(nbInGroupOfN);
     if(m_result[key] == 0) {
       BreakPoint *bp = new BreakPoint(elementMemoirePrecedent,
@@ -108,6 +112,32 @@ void ClassBreakpoint::analyse(int elementMemoirePrecedent, int elementMemoireSui
     }
     m_result[key]->addSequence(sequence);
   }
+}
+
+
+double ClassBreakpoint::verificationSequence(std::list<int> sequence) {
+  int nbIncoherence = 0;
+  int nbKmer = 0;
+  std::list<int>::iterator it;
+  int elementMemoire = 0;
+  for (it=sequence.begin(); it != sequence.end(); it++)
+  {
+    int element = *it;
+    if(elementMemoire == 0) {
+      //Do Nothing
+    }
+    else if(elementMemoire == -1 || element == -1) {
+      // Do Nothing
+    }
+    else
+    {
+      if(elementMemoire + 1 != element) {
+        nbIncoherence++;
+      } 
+    }
+    nbKmer++;
+  }
+  return (double)nbIncoherence/nbKmer;
 }
 
 
