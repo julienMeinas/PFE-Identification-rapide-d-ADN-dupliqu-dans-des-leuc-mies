@@ -40,10 +40,11 @@ int BreakPoint::getOccurence() {
 }
 
 std::string BreakPoint::displayResult(int kmer_size) {
-  std::string res = "";
-  res = ("\n\nPositions du breakpoint : " + std::to_string(m_previousPoint + kmer_size) + " [" + std::to_string(m_previousPoint) +
-  " - " + std::to_string(m_nextPoint) + "], nombre de N entre les deux : " + std::to_string(m_nbN)
-   + ", occurence : " + std::to_string(m_occurence) + '\n');
+  std::string res = "{\"BreakpointPosition\" : \"" + std::to_string(m_previousPoint + kmer_size) + "\",";
+  res = res += "\"pointBefore\" : \"" + std::to_string(m_previousPoint) + "\",";
+  res = res += "\"pointAfter\" : \"" + std::to_string(m_nextPoint) + "\",";
+  res = res += "\"numberN_Between\" : \"" + std::to_string(m_nbN) + "\",";
+  res = res += "\"occurence\" : \"" + std::to_string(m_occurence) + "\"}";
   return res;
 }
 

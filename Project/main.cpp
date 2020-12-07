@@ -16,10 +16,10 @@
 void displayResult(std::map<std::string, BreakPoint*> mapResult, std::string nomPatient, int nbSeqence, int filtreOccurence1, int kmer_size) {
   ofstream m_resultFile;
   nomPatient.replace(8, 4, "Results");
-  std::cout << "Rapport écrit dans le fichier " << nomPatient << '\n';
-  m_resultFile.open (nomPatient + ".txt");
-  m_resultFile << "Compte rendu des sequences " << nomPatient << " : " << "\n\n";
-  m_resultFile << "Nombre de sequences FLT3 annalysé : " << nbSeqence << "\n\n";
+  m_resultFile.open (nomPatient + ".json");
+  std::string data = "{\"name\" : \"" + nomPatient + "\",\n ";
+  data += "\"numberSequencesAnalysed\" : \"" + std::to_string(nbSeqence) + "\",\n ";
+
   int nbSequenceDefectueuse = 0;
   for(std::map<std::string, BreakPoint*>::iterator i=mapResult.begin(); i!=mapResult.end(); ++i) {
     if(i->second->getOccurence() == 1) {
@@ -31,12 +31,13 @@ void displayResult(std::map<std::string, BreakPoint*> mapResult, std::string nom
         nbSequenceDefectueuse += i->second->getOccurence();
     }
   }
-  m_resultFile << "Nombre de duplications en tandem : " << nbSequenceDefectueuse << "\n";
-  m_resultFile << "Détaille de ces duplications : " << "\n";
+  data += "\"numberTandemDuplication\" : \"" + std::to_string(nbSequenceDefectueuse) + "\",\n ";
+  data += "\"détails\" : \n[\n";
   for(std::map<std::string, BreakPoint*>::iterator i=mapResult.begin(); i!=mapResult.end(); ++i) {
     if(i->second->getOccurence() == 1) {
       if(filtreOccurence1 != 1) {
-        m_resultFile << i->second->displayResult(kmer_size);
+        data += i->second->displayResult(kmer_size);
+        data += ",\n";
         if(DISPLAY_SEQUENCE == 1) {
           m_resultFile << i->second->displaySequences();
         }
@@ -46,7 +47,8 @@ void displayResult(std::map<std::string, BreakPoint*> mapResult, std::string nom
       }
     }
     else{
-        m_resultFile << i->second->displayResult(kmer_size);
+        data += i->second->displayResult(kmer_size);
+        data += ",\n";
         if(DISPLAY_SEQUENCE == 1) {
           m_resultFile << i->second->displaySequences();
         }
@@ -55,8 +57,8 @@ void displayResult(std::map<std::string, BreakPoint*> mapResult, std::string nom
         }
     }
   }
-  m_resultFile << (double)nbSequenceDefectueuse/nbSeqence*100
-    << " % des cellules sont atteintes" << '\n';
+  data += "],\n \"percentage\" : \"" + std::to_string((double)nbSequenceDefectueuse/nbSeqence*100) + "\"}";
+  m_resultFile << data;
 }
 
 
