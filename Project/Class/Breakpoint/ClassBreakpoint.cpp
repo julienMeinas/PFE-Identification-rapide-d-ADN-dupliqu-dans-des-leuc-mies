@@ -12,10 +12,9 @@ using namespace std;
 Classe permettant de réaliser l'étape 3 c'est à dire de trouver
 les points d'arrets.
 */
-ClassBreakpoint::ClassBreakpoint(std::list < std::list<int> > sequence, std::list< std::list< std::list<int> > > sequenceBeforeCleaning)
+ClassBreakpoint::ClassBreakpoint(std::list < std::list<int> > sequence)
 {
   m_sequences = sequence;
-  m_sequenceBeforeCleaning = sequenceBeforeCleaning;
   m_cpt = 1;
 }
 
@@ -102,16 +101,12 @@ void ClassBreakpoint::analyse(int elementMemoirePrecedent, int elementMemoireSui
     if(m_result[key] == 0) {
       BreakPoint *bp = new BreakPoint(elementMemoirePrecedent,
                                       elementMemoireSuivant,
-                                      nbInGroupOfN,
-                                      m_sequenceBeforeCleaning);
+                                      nbInGroupOfN);
       m_result[key] = bp;
-      m_result[key]->addCptToList(m_cpt);
     }
     else{
       m_result[key]->addPoint();
-      m_result[key]->addCptToList(m_cpt);
     }
-    m_result[key]->addSequence(sequence);
   }
 }
 
