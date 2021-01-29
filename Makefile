@@ -17,7 +17,7 @@ clean:
 	rm -rf Project/Results/*
 
 %: %.cpp
-	$(CXX) $(CXXFLAGS) $^ Project/Class/Filter/ClassFilter.cpp Project/Class/Cleaning/ClassCleaning.cpp Project/Class/Breakpoint/ClassBreakpoint.cpp Project/Class/Breakpoint/BreakPoint.cpp -o $@  $(LDFLAGS)
+	$(CXX) -g $(CXXFLAGS) $^ Project/Class/Filter/ClassFilter.cpp Project/Class/Cleaning/ClassCleaning.cpp Project/Class/Breakpoint/ClassBreakpoint.cpp Project/Class/Breakpoint/BreakPoint.cpp -o $@  $(LDFLAGS)
 
 run_main:
-	./Project/main -in Project/Data/FLT3.fa -kmer-size 15 -sequences Project/Data/P8-L1810648D09.fastq.gz
+	./Project/main -kmer-size 15 -bloomsize 1000000 -nhash_bloom 10 -percentage_similarity_flt3 0.3 -percentage_fiability_seq 0.5 -sequences Project/Data/P10-L1808674D09.fastq.gz -transcript Project/Data/FLT3.fa

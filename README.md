@@ -28,5 +28,24 @@ $ make Project/main <br/>
 - Lancement du code : <br/>
 $ ./Project/main -in ["FLT3 file"]  -kmer-size [Kmer_size] -sequences ["Sequences file"]
 
+
+- Compiler le test de BreakPoint : <br/>
+$ g++ Project/Test/Breakpoint/BreakpointTest.cpp Project/Class/Breakpoint/ClassBreakpoint.cpp Project/Class/Breakpoint/BreakPoint.cpp -o BreakPointTest
+
 exemple : 
-./Project/main -in Project/Data/FLT3.fa -kmer-size 15 -sequences Project/Data/P8-L1810648D09.fastq.gz
+./Project/main -kmer-size 15 -bloomsize 1000000 -nhash_bloom 10 -percentage_similarity_flt3 0.3 -percentage_fiability_seq 0.5 -sequences Project/Data/P10-L1808674D09.fastq.gz -transcript Project/Data/FLT3.fa
+
+Options : 
+-kmer-size : la longueur des kmers
+
+-bloomsize : la longueur de notre filtre de bloom
+
+-nhash_bloom : le nombre de fonctions hashages utilisé pour l'utilisation du filtre de bloom
+
+-percentage_similarity_flt3 : le pourcentage de ressemblance que doit dépacer une séquence afin d'être considéré comme étant une séquence flt3
+
+-percentage_fiability_seq : Le pourcentage de fiabilité (nombre de suite cohérente / nombre de suite, par exemple la suite 1, 2, 3, 6, 7 est fiable à 3/4 = 0.75) que doit dépaser chaque séquence pour être utilisé
+
+-sequences les sequences à annalyser
+
+-transcript : la sequence de base (FLT3)
