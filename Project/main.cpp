@@ -43,23 +43,11 @@ void displayResult(std::map<std::string, BreakPoint*> mapResult, std::string nom
       if(filtreOccurence1 != 1) {
         data += i->second->displayResult(kmer_size);
         data += ",\n";
-        if(DISPLAY_SEQUENCE == 1) {
-          m_resultFile << i->second->displaySequences();
-        }
-        if(DISPLAY_SEQUENCE_BEFORE_CLEAN == 1) {
-          m_resultFile << i->second->displaySequencesBeforeCleaning();
-        }
       }
     }
     else{
         data += i->second->displayResult(kmer_size);
         data += ",\n";
-        if(DISPLAY_SEQUENCE == 1) {
-          m_resultFile << i->second->displaySequences();
-        }
-        if(DISPLAY_SEQUENCE_BEFORE_CLEAN == 1) {
-          m_resultFile << i->second->displaySequencesBeforeCleaning();
-        }
     }
   }
   data += "],\n \"percentage\" : \"" + std::to_string((double)nbSequenceDefectueuse/nbSeqence*100) + "\"}";
@@ -92,8 +80,9 @@ int main(int argc, char* argv[]) {
       int percentage_fiability_seq = options->getDouble(STR_PERCENTAGE_FIABILITY_SEQ);
 
 
+
       // étape 1 : Filtrer les données
-      ClassFilter* filtre = new ClassFilter(kmerSize, options->getStr(STR_URI_INPUT), sequencesFile);
+      ClassFilter* filtre = new ClassFilter(kmerSize, sequencesFile, sequencesFile);
       filtre->Filter(percentage_similarity_flt3, bloomSize, nbHash_bloom);
       //filtre.displayResult();
 
@@ -110,7 +99,7 @@ int main(int argc, char* argv[]) {
       breakpoint->Breakpoint(percentage_fiability_seq);
 
 
-      displayResult(breakpoint->getMap(), sequencesFile, size, FILTRE_DUPLICATION_OCCURENCE_1, kmerSize);
+      //displayResult(breakpoint->getMap(), sequencesFile, size, FILTRE_DUPLICATION_OCCURENCE_1, kmerSize);
       delete breakpoint;
 
 

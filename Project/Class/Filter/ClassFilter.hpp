@@ -9,8 +9,8 @@ class ClassFilter
 {
     public:
     ClassFilter(int kmerSize, std::string bankTranscript, std::string bankSequences);
-    void CreateBloomFilter();
-    void Filter(float p);
+    void CreateBloomFilter(int bloomSize, int nhash);
+    void Filter(float p, int bloomSize, int nhash);
     void CreateHashMap();
     void displayResult();
     list < list< list<int> > > getResult();
