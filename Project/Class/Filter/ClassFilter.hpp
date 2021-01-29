@@ -19,6 +19,7 @@ class ClassFilter
 
     private:
     std::string m_bankTranscript;
+    std::string m_bankTranscriptReverse;
     std::string m_bankSequences;
     int m_kmerSize;
     bloom_type *m_bloom;

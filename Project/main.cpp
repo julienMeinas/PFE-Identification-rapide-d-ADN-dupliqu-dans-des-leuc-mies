@@ -4,7 +4,12 @@
 #include "Class/Breakpoint/ClassBreakpoint.hpp"
 
 #define STR_URI_SEQUENCES               "-sequences"
-#define PERCENTAGE_SIMILARITY_FLT3      0.3
+#define STR_TRANSCRIPT                  "-transcript"
+#define STR_BLOOMSIZE                   "-bloomsize"
+#define STR_NBHASH_BLOOM                "-nhash_bloom"
+#define STR_PERCENTAGE_SIMILARITY_FLT3  "-percentage_similarity_flt3"
+#define STR_PERCENTAGE_FIABILITY_SEQ    "-percentage_fiability_seq"
+
 #define FILTRE_DUPLICATION_OCCURENCE_1  1
 #define DISPLAY_SEQUENCE                0
 #define DISPLAY_SEQUENCE_BEFORE_CLEAN   0
@@ -68,32 +73,45 @@ int main(int argc, char* argv[]) {
   /** We create a command line parser. */
   OptionsParser parser ("KmerTest");
   parser.push_back (new OptionOneParam (STR_KMER_SIZE, "kmer size",           true));
-  parser.push_back (new OptionOneParam (STR_URI_INPUT, "transcript input",    true));
   parser.push_back (new OptionOneParam (STR_URI_SEQUENCES, "sequences input", true));
-
+  parser.push_back (new OptionOneParam (STR_TRANSCRIPT, "transcript input", true));
+  parser.push_back (new OptionOneParam (STR_BLOOMSIZE, "bloom size", true));
+  parser.push_back (new OptionOneParam (STR_NBHASH_BLOOM, "nb hash", true));
+  parser.push_back (new OptionOneParam (STR_PERCENTAGE_SIMILARITY_FLT3, "percentage similarity flt3", true));
+  parser.push_back (new OptionOneParam (STR_PERCENTAGE_FIABILITY_SEQ, "percentage fiability sequence", true));
+  
   try
   {
       /** We parse the user options. */
       IProperties* options = parser.parse (argc, argv);
+      int kmerSize = options->getInt(STR_KMER_SIZE);
+      std:string sequencesFile = options->getStr(STR_URI_SEQUENCES);
+      int bloomSize = options->getInt(STR_BLOOMSIZE);
+      int nbHash_bloom = options->getInt(STR_NBHASH_BLOOM);
+      int percentage_similarity_flt3 = options->getDouble(STR_PERCENTAGE_SIMILARITY_FLT3);
+      int percentage_fiability_seq = options->getDouble(STR_PERCENTAGE_FIABILITY_SEQ);
+
 
       // étape 1 : Filtrer les données
-      ClassFilter filtre(options->getInt(STR_KMER_SIZE), options->getStr(STR_URI_INPUT), options->getStr(STR_URI_SEQUENCES));
-      filtre.Filter(PERCENTAGE_SIMILARITY_FLT3);
+      ClassFilter* filtre = new ClassFilter(kmerSize, options->getStr(STR_URI_INPUT), sequencesFile);
+      filtre->Filter(percentage_similarity_flt3, bloomSize, nbHash_bloom);
       //filtre.displayResult();
 
 
       // étape 2 : nettoyage des données
-      ClassCleaning clean(filtre.getResult());
-      clean.Cleaning();
+      ClassCleaning* clean = new ClassCleaning(filtre->getResult());
+      delete filtre;
+      clean->Cleaning();
 
       // étape 3 : recherche des points d'arrets
-      ClassBreakpoint breakpoint(clean.getResult(), filtre.getResult());
-      breakpoint.Breakpoint();
+      ClassBreakpoint* breakpoint = new ClassBreakpoint(clean->getResult());
+      int size = clean->getResult().size();
+      delete clean;
+      breakpoint->Breakpoint(percentage_fiability_seq);
 
 
-      displayResult(breakpoint.getMap(), options->getStr(STR_URI_SEQUENCES), clean.getResult().size(), FILTRE_DUPLICATION_OCCURENCE_1, options->getInt(STR_KMER_SIZE));
-      std::cout << "taille avant : " << filtre.getResult().size() << '\n';
-      std::cout << "taille après : " << clean.getResult().size() << '\n';
+      displayResult(breakpoint->getMap(), sequencesFile, size, FILTRE_DUPLICATION_OCCURENCE_1, kmerSize);
+      delete breakpoint;
 
 
 

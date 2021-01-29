@@ -1,7 +1,5 @@
 #include "ClassBreakpoint.hpp"
 
-#define PERCENTAGE_FIABILITY_SEQUENCE 0.5
-
 
 using namespace std;
 
@@ -23,13 +21,13 @@ ClassBreakpoint::ClassBreakpoint(std::list < std::list<int> > sequence)
 Pour chaque sequence on utilise la methode BreakpointSequence
 pour trouver des points d'arrets
 */
-void ClassBreakpoint::Breakpoint() {
+void ClassBreakpoint::Breakpoint(double percentageFiabilitySequence) {
   std::cout << "recherche de points d'arrets de la liste de sequences FLT3 : " << '\n';
   std::list< std::list<int> >::iterator itr;
   for (itr=m_sequences.begin(); itr != m_sequences.end(); itr++)
   {
     std::list<int> sequence = *itr;
-    BreakpointSequence(sequence);
+    BreakpointSequence(sequence, percentageFiabilitySequence);
     m_cpt++;
   }
   std::cout << "Recherche des points d'arrets fini !" << "\n\n";
@@ -40,7 +38,7 @@ void ClassBreakpoint::Breakpoint() {
 Permet de trouver un possible point d'arret sur la sequence
 en parametre et la stocker dans la hashmap m_result
 */
-void ClassBreakpoint::BreakpointSequence(std::list<int> sequence) {
+void ClassBreakpoint::BreakpointSequence(std::list<int> sequence, double percentageFiabilitySequence) {
   std::list<int>::iterator it;
 
   int inGroupOfN               =  0;
@@ -60,7 +58,7 @@ void ClassBreakpoint::BreakpointSequence(std::list<int> sequence) {
     }
     else{
       if(inGroupOfN == 1) {
-        analyse(elementMemoirePrecedent, element, nbInGroupOfN, sequence);
+        analyse(elementMemoirePrecedent, element, nbInGroupOfN, sequence, percentageFiabilitySequence);
         nbInGroupOfN = 0;
         inGroupOfN = 0;
       }
@@ -85,7 +83,7 @@ s1 est une mutation car 170 + 8 + 1 = 179
 s2 n'est pas une mutation car 170 + 8 + 1 != 139
   donc une possible duplication en tandem
 */
-void ClassBreakpoint::analyse(int elementMemoirePrecedent, int elementMemoireSuivant, int nbInGroupOfN, std::list<int> sequence) {
+void ClassBreakpoint::analyse(int elementMemoirePrecedent, int elementMemoireSuivant, int nbInGroupOfN, std::list<int> sequence, double percentageFiabilitySequence) {
   if(elementMemoireSuivant == -1 || elementMemoirePrecedent == -1 || elementMemoirePrecedent == -1) {
     return;
   }
@@ -94,7 +92,7 @@ void ClassBreakpoint::analyse(int elementMemoirePrecedent, int elementMemoireSui
   }
   else{
     double nbIncoherence_nbKmer = verificationSequence(sequence);
-    if(nbIncoherence_nbKmer > PERCENTAGE_FIABILITY_SEQUENCE){
+    if(nbIncoherence_nbKmer > percentageFiabilitySequence){
       return;
     }
     std::string key = std::to_string(elementMemoirePrecedent)+"-"+std::to_string(elementMemoireSuivant)+"-"+std::to_string(nbInGroupOfN);

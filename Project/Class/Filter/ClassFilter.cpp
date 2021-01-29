@@ -1,7 +1,5 @@
 #include "ClassFilter.hpp"
 
-#define BLOOMSIZE       1000000
-#define NHASH_BLOOM     4
 
 
 using namespace std;
@@ -16,6 +14,7 @@ ClassFilter::ClassFilter(int kmerSize, string bankTranscript, string bankSequenc
 {
   m_kmerSize = kmerSize;
   m_bankTranscript = bankTranscript;
+  m_bankTranscriptReverse = "Project/Data/FLT3_ReverseComplement.fa";
   m_bankSequences = bankSequences;
 }
 
@@ -28,24 +27,28 @@ présence d'un kmer dans le gène FLT3 car on utilise des tables
 de bits pour stocker les kmers.
 
 */
-void ClassFilter::CreateBloomFilter()
+void ClassFilter::CreateBloomFilter(int bloomsize, int nhash)
 {
   std::cout << "create bloom filter : " << '\n';
-  int bloomsize = BLOOMSIZE;
-  int nhash = NHASH_BLOOM;
   m_bloom = new bloom_type(bloomsize,nhash);
 
   IBank* transcript = Bank::open (m_bankTranscript);
   LOCAL (transcript);
+  IBank* transcriptReverse = Bank::open (m_bankTranscriptReverse);
+  LOCAL (transcriptReverse);
+  
 
   // We declare a kmer model with a given span size.
   Kmer<span>::ModelDirect model (m_kmerSize);
+  Kmer<span>::ModelDirect modelReverse (m_kmerSize);
 
   // We declare an iterator on a given sequence.
   Kmer<span>::ModelDirect::Iterator itKmer (model);
+  Kmer<span>::ModelDirect::Iterator itKmerReverse (modelReverse);
 
   // We create an iterator over this bank.
   ProgressIterator<Sequence> itFLT3 (*transcript);
+  ProgressIterator<Sequence> itFLT3Reverse (*transcriptReverse);
 
   // We loop over sequences.
   for (itFLT3.first(); !itFLT3.isDone(); itFLT3.next())
@@ -57,6 +60,19 @@ void ClassFilter::CreateBloomFilter()
       for (itKmer.first(); !itKmer.isDone(); itKmer.next())
       {
           m_bloom->insert(itKmer->value());
+      }
+  }
+
+  // We loop over sequences.
+  for (itFLT3Reverse.first(); !itFLT3Reverse.isDone(); itFLT3Reverse.next())
+  {
+      // We set the data from which we want to extract kmers.
+      itKmerReverse.setData (itFLT3Reverse->getData());
+
+      // We iterate the kmers.
+      for (itKmerReverse.first(); !itKmerReverse.isDone(); itKmerReverse.next())
+      {
+          m_bloom->insert(itKmerReverse->value());
       }
   }
 }
@@ -140,9 +156,9 @@ kmer dans le gène.
 exemple de fichier en sorti:
 N N N 1 2 3 4 5 N N N 6 8 N N N ...
 */
-void ClassFilter::Filter(float p)
+void ClassFilter::Filter(float p, int bloomsize, int nhash)
 {
-  CreateBloomFilter();
+  CreateBloomFilter(bloomsize, nhash);
   CreateHashMap();
   std::cout << "on réalise le filtre ici : " << '\n';
   IBank* sequences = Bank::open (m_bankSequences);
