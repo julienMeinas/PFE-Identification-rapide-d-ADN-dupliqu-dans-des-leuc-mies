@@ -74,6 +74,7 @@ int main(int argc, char* argv[]) {
       IProperties* options = parser.parse (argc, argv);
       int kmerSize = options->getInt(STR_KMER_SIZE);
       std:string sequencesFile = options->getStr(STR_URI_SEQUENCES);
+      string transcript = options->getStr(STR_TRANSCRIPT);
       int bloomSize = options->getInt(STR_BLOOMSIZE);
       int nbHash_bloom = options->getInt(STR_NBHASH_BLOOM);
       int percentage_similarity_flt3 = options->getDouble(STR_PERCENTAGE_SIMILARITY_FLT3);
@@ -82,7 +83,7 @@ int main(int argc, char* argv[]) {
 
 
       // étape 1 : Filtrer les données
-      ClassFilter* filtre = new ClassFilter(kmerSize, sequencesFile, sequencesFile);
+      ClassFilter* filtre = new ClassFilter(kmerSize, transcript, sequencesFile);
       filtre->Filter(percentage_similarity_flt3, bloomSize, nbHash_bloom);
       //filtre.displayResult();
 
