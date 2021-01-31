@@ -61,6 +61,11 @@ cleaningSequenceTest(ClassCleaning* clean)
     assert(seq.size() == 11);
     std::list< int > sRes = clean->CleaningSequence(seq);
     assert(sRes.size() == 6);
+    std::list< int >::iterator it;
+    it = sRes.begin();
+    it++;
+    int pos = *it;
+    assert(pos == 3);
 
 }
 
