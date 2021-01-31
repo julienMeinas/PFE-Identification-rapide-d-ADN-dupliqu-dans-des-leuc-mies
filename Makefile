@@ -21,3 +21,6 @@ clean:
 
 run_main:
 	./Project/main -kmer-size 15 -bloomsize 1000000 -nhash_bloom 10 -percentage_similarity_flt3 0.3 -percentage_fiability_seq 0.5 -sequences Project/Data/P10.fastq.gz -transcript Project/Data/FLT3.fa
+
+
+

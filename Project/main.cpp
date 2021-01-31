@@ -100,7 +100,7 @@ int main(int argc, char* argv[]) {
       breakpoint->Breakpoint(percentage_fiability_seq);
 
 
-      //displayResult(breakpoint->getMap(), sequencesFile, size, FILTRE_DUPLICATION_OCCURENCE_1, kmerSize);
+      displayResult(breakpoint->getMap(), sequencesFile, size, FILTRE_DUPLICATION_OCCURENCE_1, kmerSize);
       delete breakpoint;
 
 

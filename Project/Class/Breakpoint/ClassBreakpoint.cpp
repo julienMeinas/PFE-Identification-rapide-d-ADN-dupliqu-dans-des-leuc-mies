@@ -34,18 +34,17 @@ void ClassBreakpoint::Breakpoint(double percentageFiabilitySequence) {
 }
 
 
+
 /**
 Permet de trouver un possible point d'arret sur la sequence
 en parametre et la stocker dans la hashmap m_result
 */
 void ClassBreakpoint::BreakpointSequence(std::list<int> sequence, double percentageFiabilitySequence) {
   std::list<int>::iterator it;
-
   int inGroupOfN               =  0;
   int nbInGroupOfN             =  0;
   int elementMemoirePrecedent  = -1;
   int elementMemoire           = -1;
-  
   for (it=sequence.begin(); it != sequence.end(); it++)
   {
     int element = *it;
