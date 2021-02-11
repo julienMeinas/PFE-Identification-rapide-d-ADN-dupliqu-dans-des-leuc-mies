@@ -12,6 +12,8 @@ findPositionTest(ClassCleaning* clean)
     seq.push_back(55);
     seq.push_back(42);
     assert(clean->findPosition(41, seq) == 42);
+    assert(clean->findPosition(54, seq) == 55);
+    assert(clean->findPosition(9, seq) == 10);
 }
 
 void
@@ -63,9 +65,17 @@ cleaningSequenceTest(ClassCleaning* clean)
     assert(sRes.size() == 6);
     std::list< int >::iterator it;
     it = sRes.begin();
+    assert(*it == 2);
     it++;
-    int pos = *it;
-    assert(pos == 3);
+    assert(*it == 3);
+    it++;
+    assert(*it == -1);
+    it++;
+    assert(*it == -1);
+    it++;
+    assert(*it == 7);
+    it++;
+    assert(*it == 8);
 
 }
 
@@ -78,5 +88,7 @@ int main() {
     ClassCleaning* clean = new ClassCleaning(sequences);
     findPositionTest(clean);
     cleaningSequenceTest(clean);
+    std::cout << "**************************" << "\n";
     std::cout << "Class Cleaning Test réussi" << "\n";
+    std::cout << "**************************" << "\n";
 }
