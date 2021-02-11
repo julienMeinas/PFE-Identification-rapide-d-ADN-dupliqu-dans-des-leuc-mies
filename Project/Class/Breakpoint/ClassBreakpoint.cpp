@@ -128,6 +128,7 @@ double ClassBreakpoint::verificationSequence(std::list<int> sequence) {
         nbIncoherence++;
       } 
     }
+    elementMemoire = element;
     nbKmer++;
   }
   return (double)nbIncoherence/nbKmer;
